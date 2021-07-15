@@ -291,11 +291,8 @@ function Container() {
 			<Dialog
 				open={difficultyOpen}
 				onClose={(evt) => {
-					console.log(evt.detail.action);
 					if (evt.detail.action == 'change') {
 						const difficulty = difficulties[selectedDifficulty];
-
-            console.log()
 
 						setRowCount(difficulty.rowCount);
 						setColCount(difficulty.colCount);
@@ -310,7 +307,6 @@ function Container() {
 
 					setDifficultyOpen(false);
 				}}
-				onClosed={(evt) => console.log(evt.detail.action)}
 			>
 				<DialogTitle>Change Difficulty</DialogTitle>
 				<DialogContent>
