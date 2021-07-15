@@ -130,9 +130,6 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 
 	const { Congrats, GameOver, onStart, onEnd, onReset } = props;
 
-	console.log(`H: ${props.height}`)
-	console.log(`G: ${grid.length}`)
-	console.log(`R: ${revealedGrid.length}`)
 	if (grid.length !== props.height) {
 		setGrid(
 			generateSolvedField(props.width, props.height, props.numMines)
@@ -335,7 +332,6 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 	let buttons = [];
 	for (let i = 0; i < grid.length; i++) {
 		buttons[i] = new Array<any>();
-		console.log(i);
 		for (let j = 0; j < grid[i].length; j++) {
 			buttons[i].push(
 				<Button
