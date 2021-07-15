@@ -58,6 +58,15 @@ $cta: var(--mdc-theme-primary);
 
 		&.small {
 			--size: 60px;
+
+			.gridButton img {
+				height: 36px !important;
+				width: auto !important;
+
+				&[alt="flag"] {
+					height: 28px !important;
+				}
+			}
 		}
 	}
 
@@ -108,6 +117,10 @@ $cta: var(--mdc-theme-primary);
 		font-size: 20px;
 		font-weight: 700 !important;
 
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
 		position: relative;
 
 		&::after {
@@ -136,6 +149,10 @@ $cta: var(--mdc-theme-primary);
 
 		&:focus::after {
 			transition: 75ms;
+		}
+
+		img {
+			height: 22px;
 		}
 	}
 

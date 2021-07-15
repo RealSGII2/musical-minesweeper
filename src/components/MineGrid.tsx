@@ -3,6 +3,7 @@ import React, {
 	DetailedHTMLProps,
 	HTMLAttributes,
 	ReactNode,
+	useEffect,
 	useState,
 } from 'react';
 import '../styles/app.scss';
@@ -11,14 +12,15 @@ import '../styles/app.scss';
 function Button({
 	children,
 	pressed,
+	flagged,
 	id,
 	...rest
-}: { children: ReactNode; pressed: boolean } & DetailedHTMLProps<
+}: { children: ReactNode; pressed: boolean, flagged: boolean } & DetailedHTMLProps<
 	HTMLAttributes<HTMLButtonElement>,
 	HTMLButtonElement
 >) {
 	return (
-		<td>
+		<td className={`${flagged ? 'flagged' : ''}`}>
 			<button
 				className={`gridButton ${pressed ? 'pressed' : ''}`}
 				id={id}
@@ -31,30 +33,44 @@ function Button({
 }
 
 // Actual grid
-const numColorsMap: any = {
-	x: null,
-	0: 'lightgrey',
-	1: 'blue',
-	2: 'green',
-	3: 'red',
-	4: 'purple',
-	5: 'maroon',
-	6: 'turquoise',
-	7: 'black',
-	8: 'grey',
-};
+// const numColorsMap: any = {
+// 	x: null,
+// 	0: 'lightgrey',
+// 	1: 'blue',
+// 	2: 'green',
+// 	3: 'red',
+// 	4: 'purple',
+// 	5: 'maroon',
+// 	6: 'turquoise',
+// 	7: 'black',
+// 	8: 'grey',
+// };
+
+/// OLD
+// const numCharMap: any = {
+// 	x: null,
+// 	0: '',
+// 	1: '𝅝',
+// 	2: '𝅗𝅥',
+// 	3: '♩',
+// 	4: '♪',
+// 	5: '𝅘𝅥𝅯',
+// 	6: '𝅘𝅥𝅰',
+// 	7: '𝅘𝅥𝅱',
+// 	8: '𝅘𝅥𝅲',
+// }
 
 const numCharMap: any = {
 	x: null,
 	0: '',
-	1: '𝅝',
-	2: '𝅗𝅥',
-	3: '♩',
-	4: '♪',
-	5: '𝅘𝅥𝅯',
-	6: '𝅘𝅥𝅰',
-	7: '𝅘𝅥𝅱',
-	8: '𝅘𝅥𝅲',
+	1: <img alt="1" src="/icons/whole.png" />,
+	2: <img alt="2" src="/icons/half.png" />,
+	3: <img alt="3" src="/icons/quarter.png" />,
+	4: <img alt="4" src="/icons/eighth.png" />,
+	5: <img alt="5" src="/icons/sixteenth.png" />,
+	6: <img alt="6" src="/icons/thirty_second.png" />,
+	7: <img alt="7" src="/icons/sixty_fourth.png" />,
+	8: <img alt="8" src="/icons/one_twenty_eighth.png" />,
 }
 
 const generateFieldOf = (width: number, height: number, value: number) => {
@@ -69,10 +85,17 @@ const generateFieldOf = (width: number, height: number, value: number) => {
 	return [...field];
 };
 
+export const generateEmptyField = (
+	width: number,
+	height: number
+) => generateFieldOf(width, height, -1);
+
 export const generateSolvedField = (
 	width: number,
 	height: number,
-	numMines: number
+	numMines: number,
+	excludeX: number,
+	excludeY: number
 ) => {
 	let field: any = generateFieldOf(width, height, 0);
 	// add mines
@@ -80,7 +103,13 @@ export const generateSolvedField = (
 		const x = Math.floor(Math.random() * width);
 		const y = Math.floor(Math.random() * height);
 		// As it's small ints, might have duplicates, thus checking
-		if (field[y][x] === 'x') continue;
+		if (
+			field[y][x] === 'x' ||
+			(
+				(excludeX - 1 <= x && x <= excludeX + 1) &&
+				(excludeY - 1 <= y && y <= excludeY + 1)
+			)
+		) continue;
 		field[y][x] = 'x';
 		numMines -= 1;
 	}
@@ -116,7 +145,7 @@ export const generateSolvedField = (
 
 const MineGrid = React.forwardRef((props: any, ref) => {
 	let [grid, setGrid] = useState(
-		generateSolvedField(props.width, props.height, props.numMines)
+		generateEmptyField(props.width, props.height)
 	);
 	let [revealedGrid, setRevealedGrid] = useState(
 		generateFieldOf(props.width, props.height, 0)
@@ -124,16 +153,29 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 	let [numRevealedTiles, setNumRevealedTiles] = useState(0);
 	let [numFlags, setNumFlags] = useState(0);
 	let [hasStarted, setStarted] = useState(false);
+	
+	let [clickCoords, setClickCoords] = useState<any[]>([null, null]);
 
 	const [openCongrats, setOpenCongrats] = React.useState(false);
 	const [openGameOver, setOpenGameOver] = React.useState(false);
 
 	const { Congrats, GameOver, onStart, onEnd, onReset } = props;
 
+	useEffect(() => {
+		if (clickCoords[0] != null && clickCoords[1] != null) {
+			updateTileState(clickCoords[1], clickCoords[0])
+		}
+	}, [grid])
+
 	if (grid.length !== props.height) {
-		setGrid(
-			generateSolvedField(props.width, props.height, props.numMines)
-		);
+		if (clickCoords[0] == null && clickCoords[1] == null)
+			setGrid(
+				generateEmptyField(props.width, props.height)
+			);
+		else
+			setGrid(
+				generateSolvedField(props.width, props.height, props.numMines, clickCoords[0] ?? 0, clickCoords[1] ?? 0)
+			);
 	}
 
 	if (revealedGrid.length !== props.height) {
@@ -144,14 +186,14 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 
 	React.useImperativeHandle(ref, () => ({
 		newGame() {
+			setClickCoords([null, null])
 			setNumFlags(0);
 			props.setFlagsCount(0);
 			setNumRevealedTiles(0);
 			setGrid([
-				...generateSolvedField(
+				...generateEmptyField(
 					props.width,
 					props.height,
-					props.numMines
 				),
 			]);
 			setRevealedGrid([...generateFieldOf(props.width, props.height, 0)]);
@@ -163,6 +205,7 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 			setStarted(false);
 		},
 		restartGame() {
+			setClickCoords([null, null])
 			setNumFlags(0);
 			props.setFlagsCount(0);
 			setNumRevealedTiles(0);
@@ -237,14 +280,14 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 			// reveal top left
 			if (
 				grid[i - 1]?.[j - 1] >= 0 &&
-				revealedGrid[i - 1]?.[j - 1] === 0
+				revealedGrid[i - 1]?.[j - 1] !== 1
 			) {
 				revealedGrid[i - 1][j - 1] = 1;
 				grid[i - 1]?.[j - 1] === 0 &&
 					adjacentCellsToReveal.push([i - 1, j - 1]);
 			}
 			// reveal top
-			if (grid[i - 1]?.[j] >= 0 && revealedGrid[i - 1]?.[j] === 0) {
+			if (grid[i - 1]?.[j] >= 0 && revealedGrid[i - 1]?.[j] !== 1) {
 				revealedGrid[i - 1][j] = 1;
 				grid[i - 1]?.[j] === 0 &&
 					adjacentCellsToReveal.push([i - 1, j]);
@@ -252,14 +295,14 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 			// reveal top right
 			if (
 				grid[i - 1]?.[j + 1] >= 0 &&
-				revealedGrid[i - 1]?.[j + 1] === 0
+				revealedGrid[i - 1]?.[j + 1] !== 1
 			) {
 				revealedGrid[i - 1][j + 1] = 1;
 				grid[i - 1]?.[j + 1] === 0 &&
 					adjacentCellsToReveal.push([i - 1, j + 1]);
 			}
 			// reveal right
-			if (grid[i]?.[j + 1] >= 0 && revealedGrid[i]?.[j + 1] === 0) {
+			if (grid[i]?.[j + 1] >= 0 && revealedGrid[i]?.[j + 1] !== 1) {
 				revealedGrid[i][j + 1] = 1;
 				grid[i]?.[j + 1] === 0 &&
 					adjacentCellsToReveal.push([i, j + 1]);
@@ -267,14 +310,14 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 			// reveal bottom right
 			if (
 				grid[i + 1]?.[j + 1] >= 0 &&
-				revealedGrid[i + 1]?.[j + 1] === 0
+				revealedGrid[i + 1]?.[j + 1] !== 1
 			) {
 				revealedGrid[i + 1][j + 1] = 1;
 				grid[i + 1]?.[j + 1] === 0 &&
 					adjacentCellsToReveal.push([i + 1, j + 1]);
 			}
 			// reveal bottom
-			if (grid[i + 1]?.[j] >= 0 && revealedGrid[i + 1]?.[j] === 0) {
+			if (grid[i + 1]?.[j] >= 0 && revealedGrid[i + 1]?.[j] !== 1) {
 				revealedGrid[i + 1][j] = 1;
 				grid[i + 1]?.[j] === 0 &&
 					adjacentCellsToReveal.push([i + 1, j]);
@@ -282,14 +325,14 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 			// reveal bottom left
 			if (
 				grid[i + 1]?.[j - 1] >= 0 &&
-				revealedGrid[i + 1]?.[j - 1] === 0
+				revealedGrid[i + 1]?.[j - 1] !== 1
 			) {
 				revealedGrid[i + 1][j - 1] = 1;
 				grid[i + 1]?.[j - 1] === 0 &&
 					adjacentCellsToReveal.push([i + 1, j - 1]);
 			}
 			// reveal left
-			if (grid[i]?.[j - 1] >= 0 && revealedGrid[i]?.[j - 1] === 0) {
+			if (grid[i]?.[j - 1] >= 0 && revealedGrid[i]?.[j - 1] !== 1) {
 				revealedGrid[i][j - 1] = 1;
 				grid[i]?.[j - 1] === 0 &&
 					adjacentCellsToReveal.push([i, j - 1]);
@@ -337,21 +380,24 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 				<Button
 					id={i + ':' + j}
 					pressed={revealedGrid[i][j] === 1}
-					style={{
-						color:
-							revealedGrid[i][j] === 0
-								? 'lightgrey'
-								: numColorsMap[grid[i][j]],
-					}}
+					flagged={revealedGrid[i][j] === 2}
 					onClick={() => {
 						if (!hasStarted) {
 							setStarted(true);
+
+							setClickCoords([null, null]);
+							setClickCoords([j, i]);
+
+							setGrid([
+								...generateSolvedField(props.width, props.height, props.numMines, j, i)
+							])
+
 							onStart();
 						}
-
-						updateTileState(i, j);
+						else
+							updateTileState(i, j);
 					}}
-					onContextMenu={(event) => { toggleFlag(i, j); event.preventDefault(); }}
+					onContextMenu={(event) => { onStart(); toggleFlag(i, j); (event.target as HTMLElement).blur(); event.preventDefault(); }}
 				>
 					{renderTile(i, j)}
 				</Button>
