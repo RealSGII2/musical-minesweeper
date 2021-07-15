@@ -15,10 +15,11 @@ function Button({
 	flagged,
 	id,
 	...rest
-}: { children: ReactNode; pressed: boolean, flagged: boolean } & DetailedHTMLProps<
-	HTMLAttributes<HTMLButtonElement>,
-	HTMLButtonElement
->) {
+}: {
+	children: ReactNode;
+	pressed: boolean;
+	flagged: boolean;
+} & DetailedHTMLProps<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
 	return (
 		<td className={`${flagged ? 'flagged' : ''}`}>
 			<button
@@ -63,15 +64,15 @@ function Button({
 const numCharMap: any = {
 	x: null,
 	0: '',
-	1: <img alt="1" src="/icons/whole.png" />,
-	2: <img alt="2" src="/icons/half.png" />,
-	3: <img alt="3" src="/icons/quarter.png" />,
-	4: <img alt="4" src="/icons/eighth.png" />,
-	5: <img alt="5" src="/icons/sixteenth.png" />,
-	6: <img alt="6" src="/icons/thirty_second.png" />,
-	7: <img alt="7" src="/icons/sixty_fourth.png" />,
-	8: <img alt="8" src="/icons/one_twenty_eighth.png" />,
-}
+	1: <img alt='1' src='/icons/whole.png' />,
+	2: <img alt='2' src='/icons/half.png' />,
+	3: <img alt='3' src='/icons/quarter.png' />,
+	4: <img alt='4' src='/icons/eighth.png' />,
+	5: <img alt='5' src='/icons/sixteenth.png' />,
+	6: <img alt='6' src='/icons/thirty_second.png' />,
+	7: <img alt='7' src='/icons/sixty_fourth.png' />,
+	8: <img alt='8' src='/icons/one_twenty_eighth.png' />,
+};
 
 const generateFieldOf = (width: number, height: number, value: number) => {
 	let field: any = [];
@@ -85,10 +86,8 @@ const generateFieldOf = (width: number, height: number, value: number) => {
 	return [...field];
 };
 
-export const generateEmptyField = (
-	width: number,
-	height: number
-) => generateFieldOf(width, height, -1);
+export const generateEmptyField = (width: number, height: number) =>
+	generateFieldOf(width, height, -1);
 
 export const generateSolvedField = (
 	width: number,
@@ -105,11 +104,12 @@ export const generateSolvedField = (
 		// As it's small ints, might have duplicates, thus checking
 		if (
 			field[y][x] === 'x' ||
-			(
-				(excludeX - 1 <= x && x <= excludeX + 1) &&
-				(excludeY - 1 <= y && y <= excludeY + 1)
-			)
-		) continue;
+			(excludeX - 1 <= x &&
+				x <= excludeX + 1 &&
+				excludeY - 1 <= y &&
+				y <= excludeY + 1)
+		)
+			continue;
 		field[y][x] = 'x';
 		numMines -= 1;
 	}
@@ -153,7 +153,7 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 	let [numRevealedTiles, setNumRevealedTiles] = useState(0);
 	let [numFlags, setNumFlags] = useState(0);
 	let [hasStarted, setStarted] = useState(false);
-	
+
 	let [clickCoords, setClickCoords] = useState<any[]>([null, null]);
 
 	const [openCongrats, setOpenCongrats] = React.useState(false);
@@ -163,49 +163,46 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 
 	useEffect(() => {
 		if (clickCoords[0] != null && clickCoords[1] != null) {
-			updateTileState(clickCoords[1], clickCoords[0])
+			updateTileState(clickCoords[1], clickCoords[0]);
 		}
-	}, [grid])
+	}, [grid]);
 
 	if (grid.length !== props.height) {
 		if (clickCoords[0] == null && clickCoords[1] == null)
-			setGrid(
-				generateEmptyField(props.width, props.height)
-			);
+			setGrid(generateEmptyField(props.width, props.height));
 		else
 			setGrid(
-				generateSolvedField(props.width, props.height, props.numMines, clickCoords[0] ?? 0, clickCoords[1] ?? 0)
+				generateSolvedField(
+					props.width,
+					props.height,
+					props.numMines,
+					clickCoords[0] ?? 0,
+					clickCoords[1] ?? 0
+				)
 			);
 	}
 
 	if (revealedGrid.length !== props.height) {
-		setRevealedGrid(
-			generateFieldOf(props.width, props.height, 0)
-		);
+		setRevealedGrid(generateFieldOf(props.width, props.height, 0));
 	}
 
 	React.useImperativeHandle(ref, () => ({
 		newGame() {
-			setClickCoords([null, null])
+			setClickCoords([null, null]);
 			setNumFlags(0);
 			props.setFlagsCount(0);
 			setNumRevealedTiles(0);
-			setGrid([
-				...generateEmptyField(
-					props.width,
-					props.height,
-				),
-			]);
+			setGrid([...generateEmptyField(props.width, props.height)]);
 			setRevealedGrid([...generateFieldOf(props.width, props.height, 0)]);
 
-			setOpenCongrats(false)
-			setOpenGameOver(false)
+			setOpenCongrats(false);
+			setOpenGameOver(false);
 
 			onReset(0, false);
 			setStarted(false);
 		},
 		restartGame() {
-			setClickCoords([null, null])
+			setClickCoords([null, null]);
 			setNumFlags(0);
 			props.setFlagsCount(0);
 			setNumRevealedTiles(0);
@@ -383,7 +380,7 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 					flagged={revealedGrid[i][j] === 2}
 					onClick={() => {
 						if (revealedGrid[i][j] === 2) return;
-						
+
 						if (!hasStarted) {
 							setStarted(true);
 
@@ -391,15 +388,24 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 							setClickCoords([j, i]);
 
 							setGrid([
-								...generateSolvedField(props.width, props.height, props.numMines, j, i)
-							])
+								...generateSolvedField(
+									props.width,
+									props.height,
+									props.numMines,
+									j,
+									i
+								),
+							]);
 
 							onStart();
-						}
-						else
-							updateTileState(i, j);
+						} else updateTileState(i, j);
 					}}
-					onContextMenu={(event) => { onStart(); toggleFlag(i, j); (event.target as HTMLElement).blur(); event.preventDefault(); }}
+					onContextMenu={(event) => {
+						if (!hasStarted) return event.preventDefault();
+						toggleFlag(i, j);
+						(event.target as HTMLElement).blur();
+						event.preventDefault();
+					}}
 				>
 					{renderTile(i, j)}
 				</Button>
@@ -410,8 +416,16 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 	return (
 		<>
 			<div className={`map ${props.width < 16 ? 'small' : ''}`}>
-				{openCongrats && Congrats({ revealed: numRevealedTiles, close: () => setOpenCongrats(false) })}
-				{openGameOver && GameOver({ revealed: numRevealedTiles, close: () => setOpenGameOver(false) })}
+				{openCongrats &&
+					Congrats({
+						revealed: numRevealedTiles,
+						close: () => setOpenCongrats(false),
+					})}
+				{openGameOver &&
+					GameOver({
+						revealed: numRevealedTiles,
+						close: () => setOpenGameOver(false),
+					})}
 				<table>
 					{buttons.map((b) => (
 						<tr>{b}</tr>
