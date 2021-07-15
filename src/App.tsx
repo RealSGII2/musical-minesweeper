@@ -356,10 +356,10 @@ function Container() {
 			>
 				<DialogTitle>Info</DialogTitle>
 				<DialogContent>
-					<p>
-						Musical Minesweeper, v1.0.0 by RealSGII2.
+					<p style={{ marginBottom: 0 }}>
+						Musical Minesweeper, v1.1.0 by RealSGII2.
 					</p>
-          <p>
+          <p style={{ marginTop: 0 }}>
             A skin of Minesweeper using musical notes.
           </p>
 
@@ -376,6 +376,14 @@ function Container() {
           <p>
             <b>Left mouse button</b>: Reveal a block <br/>
             <b>Right mouse button</b>: Flag a block, again to unflag
+          </p>
+
+          <Typography use="headline6">
+            Mobile
+          </Typography>
+          <p style={{ marginTop: 0 }}>
+            <b>Tap</b>: Reveal a block <br/>
+            <b>Long press</b>: Flag a block, again to unflag
           </p>
 
           <Typography use="headline5">

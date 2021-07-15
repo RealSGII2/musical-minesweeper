@@ -382,6 +382,8 @@ const MineGrid = React.forwardRef((props: any, ref) => {
 					pressed={revealedGrid[i][j] === 1}
 					flagged={revealedGrid[i][j] === 2}
 					onClick={() => {
+						if (revealedGrid[i][j] === 2) return;
+						
 						if (!hasStarted) {
 							setStarted(true);
 
