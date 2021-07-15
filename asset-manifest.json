@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/RealSGII2/musical-minesweeper/static/css/main.171d1177.chunk.css",
+    "main.js": "/RealSGII2/musical-minesweeper/static/js/main.d890f661.chunk.js",
+    "main.js.map": "/RealSGII2/musical-minesweeper/static/js/main.d890f661.chunk.js.map",
+    "runtime-main.js": "/RealSGII2/musical-minesweeper/static/js/runtime-main.0bfea550.js",
+    "runtime-main.js.map": "/RealSGII2/musical-minesweeper/static/js/runtime-main.0bfea550.js.map",
+    "static/css/2.a6b7ccde.chunk.css": "/RealSGII2/musical-minesweeper/static/css/2.a6b7ccde.chunk.css",
+    "static/js/2.dd6e56e7.chunk.js": "/RealSGII2/musical-minesweeper/static/js/2.dd6e56e7.chunk.js",
+    "static/js/2.dd6e56e7.chunk.js.map": "/RealSGII2/musical-minesweeper/static/js/2.dd6e56e7.chunk.js.map",
+    "static/js/3.7df5b514.chunk.js": "/RealSGII2/musical-minesweeper/static/js/3.7df5b514.chunk.js",
+    "static/js/3.7df5b514.chunk.js.map": "/RealSGII2/musical-minesweeper/static/js/3.7df5b514.chunk.js.map",
+    "index.html": "/RealSGII2/musical-minesweeper/index.html",
+    "static/css/2.a6b7ccde.chunk.css.map": "/RealSGII2/musical-minesweeper/static/css/2.a6b7ccde.chunk.css.map",
+    "static/css/main.171d1177.chunk.css.map": "/RealSGII2/musical-minesweeper/static/css/main.171d1177.chunk.css.map",
+    "static/js/2.dd6e56e7.chunk.js.LICENSE.txt": "/RealSGII2/musical-minesweeper/static/js/2.dd6e56e7.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0bfea550.js",
+    "static/css/2.a6b7ccde.chunk.css",
+    "static/js/2.dd6e56e7.chunk.js",
+    "static/css/main.171d1177.chunk.css",
+    "static/js/main.d890f661.chunk.js"
+  ]
+}
