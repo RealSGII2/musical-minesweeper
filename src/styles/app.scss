@@ -190,24 +190,24 @@ $cta: var(--mdc-theme-primary);
 .flexRow {
 	display: flex;
 	justify-content: center;
-    margin: 3rem 0;
-    width: 50%;
+	margin: 3rem 0;
+	width: 50%;
 	min-width: 400px;
 
 	div {
 		display: flex;
 		flex-direction: column;
-        align-items: center;
+		align-items: center;
 
-        &.divider {
-            height: 75%;
-            width: 1px;
-            background-color: $border;
-        }
+		&.divider {
+			height: 75%;
+			width: 1px;
+			background-color: $border;
+		}
 
-        &:not(.divider) {
-            flex: 1;
-        }
+		&:not(.divider) {
+			flex: 1;
+		}
 	}
 }
 
@@ -222,24 +222,88 @@ $cta: var(--mdc-theme-primary);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-    justify-content: center;
+	justify-content: center;
 
 	padding: 1rem 0;
 
-	position: absolute;
+	position: fixed;
 	top: 1px;
 	left: 0;
 	right: 0;
 	bottom: 1px;
 
-    background-color: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(2px);
+	background-color: rgba(255, 255, 255, 0.85);
+	backdrop-filter: blur(2px);
 
-    border-bottom: solid 1px $border;
+	border-bottom: solid 1px $border;
 
-    z-index: 5;
+	z-index: 5;
 
 	.mdc-button--outlined {
 		background-color: #fff !important;
+	}
+}
+
+@media screen and (max-width: 786px) {
+	.gameWrapper {
+		height: 100vh;
+		max-height: initial;
+		border-radius: 0;
+		border: none;
+	}
+
+	.flexRow, .buttonRow {
+		flex-direction: column;
+	}
+
+	.flexRow {
+		> * {
+			padding: 0.5rem;
+		}
+
+		.divider {
+			width: 50% !important;
+			height: 1px !important;
+			padding: 0;
+			align-self: center;
+		}
+	}
+
+	.customButton {
+		text-align: center;
+		justify-content: center;
+	}
+
+	.map {
+		max-height: calc(100vh - 176px) !important;
+		--size: 50px !important;
+
+		table {
+			margin-bottom: -6px;
+		}
+	}
+
+	.header {
+		box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
+	}
+
+	.actionRow {
+		position: relative;
+
+		box-shadow: 0 -2px 4px -1px rgb(0 0 0 / 20%), 0 -4px 5px 0 rgb(0 0 0 / 14%), 0 -1px 10px 0 rgb(0 0 0 / 12%);
+
+		&::after {
+			content: "";
+			
+			position: absolute;
+			top: 99%;
+			left: 0;
+			right: 0;
+			
+			height: 60px;
+			background-color: #fff;
+
+			z-index: 2;
+		}
 	}
 }
