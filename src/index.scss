@@ -1,0 +1,69 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+
+// Icons
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+// Body styles
+body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 6rem;
+
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+
+	width: 100%;
+	height: 100%;
+
+	font-family: 'Roboto', sans-serif;
+}
+
+// Global styles
+* {
+	box-sizing: inherit;
+	font-family: inherit;
+}
+
+// Theming
+:root {
+	--mdc-theme-primary: #1a73e8;
+	--mdc-theme-secondary: #1a73e8;
+	--mdc-theme-background: #fff;
+	--mdc-theme-surface: #fff;
+	--mdc-theme-error: #b00020;
+	--mdc-theme-on-primary: #fff;
+	--mdc-theme-on-secondary: #fff;
+	--mdc-theme-on-surface: #000;
+	--mdc-theme-on-error: #fff;
+	--mdc-theme-text-primary-on-background: rgba(0, 0, 0, 0.87);
+	--mdc-theme-text-secondary-on-background: rgba(0, 0, 0, 0.54);
+	--mdc-theme-text-hint-on-background: rgba(0, 0, 0, 0.38);
+	--mdc-theme-text-disabled-on-background: rgba(0, 0, 0, 0.38);
+	--mdc-theme-text-icon-on-background: rgba(0, 0, 0, 0.38);
+	--mdc-theme-text-primary-on-light: rgba(0, 0, 0, 0.87);
+	--mdc-theme-text-secondary-on-light: rgba(0, 0, 0, 0.54);
+	--mdc-theme-text-hint-on-light: rgba(0, 0, 0, 0.38);
+	--mdc-theme-text-disabled-on-light: rgba(0, 0, 0, 0.38);
+	--mdc-theme-text-icon-on-light: rgba(0, 0, 0, 0.38);
+	--mdc-theme-text-primary-on-dark: #fff;
+	--mdc-theme-text-secondary-on-dark: hsla(0, 0%, 100%, 0.7);
+	--mdc-theme-text-hint-on-dark: hsla(0, 0%, 100%, 0.5);
+	--mdc-theme-text-disabled-on-dark: hsla(0, 0%, 100%, 0.5);
+	--mdc-theme-text-icon-on-dark: hsla(0, 0%, 100%, 0.5);
+
+	// Custom
+	--mdc-custom-border: #ccc;
+  --mdc-custom-icon-button: rgba(0,0,0,0.54);
+}
+
+// Fix theming
+.mdc-icon-button {
+  color: var(--mdc-custom-icon-button) !important;
+}
