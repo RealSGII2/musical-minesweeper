@@ -175,7 +175,7 @@ const App = forwardRef(
 						height={rowCount || 16}
 						width={colCount || 30}
 						numMines={mineCount || 99}
-						setFlagsCount={() => {}}
+						setFlagsCount={setFlagCount}
 						onStart={start}
 						onEnd={pause}
 						onReset={reset}
