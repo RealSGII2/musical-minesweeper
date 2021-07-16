@@ -64,14 +64,14 @@ function Button({
 const numCharMap: any = {
 	x: null,
 	0: '',
-	1: <img alt='1' src='/icons/whole.png' />,
-	2: <img alt='2' src='/icons/half.png' />,
-	3: <img alt='3' src='/icons/quarter.png' />,
-	4: <img alt='4' src='/icons/eighth.png' />,
-	5: <img alt='5' src='/icons/sixteenth.png' />,
-	6: <img alt='6' src='/icons/thirty_second.png' />,
-	7: <img alt='7' src='/icons/sixty_fourth.png' />,
-	8: <img alt='8' src='/icons/one_twenty_eighth.png' />,
+	1: <img alt='1' src='/icons_new/1.png' />,
+	2: <img alt='2' src='/icons_new/2.png' />,
+	3: <img alt='3' src='/icons_new/3.png' />,
+	4: <img alt='4' src='/icons_new/4.png' />,
+	5: <img alt='5' src='/icons_new/5.png' />,
+	6: <img alt='6' src='/icons_new/6.png' />,
+	7: <img alt='7' src='/icons_new/7.png' />,
+	8: <img alt='8' src='/icons_new/8.png' />,
 };
 
 const generateFieldOf = (width: number, height: number, value: number) => {
