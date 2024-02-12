@@ -57,6 +57,12 @@ const difficulties = [
 		colCount: 30,
 		mineCount: 99,
 	},
+	{
+		name: 'Death Wish',
+		rowCount: 16,
+		colCount: 30,
+		mineCount: 478,
+	},
 ];
 
 const App = forwardRef(
