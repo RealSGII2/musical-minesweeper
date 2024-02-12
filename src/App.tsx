@@ -59,9 +59,9 @@ const difficulties = [
 	},
 	{
 		name: 'Death Wish',
-		rowCount: 16,
-		colCount: 30,
-		mineCount: 478,
+		rowCount: 32,
+		colCount: 70,
+		mineCount: 1024,
 	},
 ];
 
